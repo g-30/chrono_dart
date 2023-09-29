@@ -11,11 +11,11 @@ class ReferenceWithTimezone {
   final DateTime instant;
   final int? timezoneOffset;
 
-  ReferenceWithTimezone(dynamic input)
-      : assert(input is ParsingReference || input is DateTime),
+  ReferenceWithTimezone([ dynamic input ])
+      : assert(input == null || input is ParsingReference || input is DateTime),
         instant = input is DateTime
             ? input
-            : ((input as ParsingReference).instant ?? DateTime.now()),
+            : ((input is ParsingReference ? input.instant : null) ?? DateTime.now()),
         timezoneOffset = input is! ParsingReference
             ? null
             : toTimezoneOffset(input.timezone, input.instant);

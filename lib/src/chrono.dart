@@ -51,7 +51,7 @@ class Chrono {
 
   static const defaultConfig = ENDefaultConfiguration();
 
-  Chrono([ Configuration? configuration ])
+  Chrono([Configuration? configuration])
       : parsers = (configuration ?? defaultConfig.createCasualConfiguration())
             .parsers,
         refiners = (configuration ?? defaultConfig.createCasualConfiguration())
@@ -65,8 +65,8 @@ class Chrono {
     ));
   }
 
-  /// A shortcut for calling {@Link parse | parse() } then transform the result into Javascript's Date object
-  /// @return Date object created from the first parse result
+  /// A shortcut for calling {@Link parse | parse() } then transform the result into Dart's DateTime object
+  /// @return DateTime object created from the first parse result
   DateTime? parseDate(String text,
       [dynamic referenceDate, ParsingOption? option]) {
     assert(referenceDate == null ||
@@ -115,7 +115,7 @@ class Chrono {
       matchIndex = index;
 
       final result = parser.extract(context, RegExpChronoMatch(match));
-      if (!result) {
+      if (result == null) {
         // If fails, move on by 1
         remainingText = originalText.substring(matchIndex + 1);
         match = pattern.firstMatch(remainingText);
@@ -155,14 +155,14 @@ class ParsingContext implements DebugHandler {
   @Deprecated('Use `reference.instant` instead.')
   late DateTime refDate;
 
-  ParsingContext(this.text, dynamic refDate, ParsingOption? option)
-      : assert(refDate == null ||
-            refDate is ParsingReference ||
-            refDate is DateTime),
+  ParsingContext(this.text, dynamic irefDate, ParsingOption? option)
+      : assert(irefDate == null ||
+            irefDate is ParsingReference ||
+            irefDate is DateTime),
         option = option ?? ParsingOption(),
-        reference = ReferenceWithTimezone(refDate) {
+        reference = ReferenceWithTimezone(irefDate) {
     // ignore: deprecated_member_use_from_same_package
-    this.refDate = reference.instant;
+    refDate = reference.instant;
   }
 
   ParsingComponents createParsingComponents([dynamic components]) {
@@ -193,9 +193,11 @@ class ParsingContext implements DebugHandler {
         ? textOrEndIndex
         : this.text.substring(index, textOrEndIndex);
 
-    final start =
-        startComponents ? createParsingComponents(startComponents) : null;
-    final end = endComponents ? createParsingComponents(endComponents) : null;
+    final start = startComponents != null
+        ? createParsingComponents(startComponents)
+        : null;
+    final end =
+        endComponents != null ? createParsingComponents(endComponents) : null;
 
     return ParsingResult(reference, index, text, start, end);
   }
