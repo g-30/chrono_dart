@@ -31,6 +31,12 @@ class OverlapRemovalRefiner implements Refiner {
       filteredResults.add(prevResult);
     }
 
+    if (filteredResults.length != results.length) {
+      context.debug(() {
+        print("Refiner $runtimeType: filtered out ${results.length - filteredResults.length} results");
+      });
+    }
+
     return filteredResults;
   }
 }

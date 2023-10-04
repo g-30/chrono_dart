@@ -27,10 +27,10 @@ final _pattern = RegExp(
         "(?=\\W|\$)(?!\\:\\d)",
     caseSensitive: false);
 
-const MONTH_NAME_GROUP = 1;
-const DATE_GROUP = 2;
-const DATE_TO_GROUP = 3;
-const YEAR_GROUP = 4;
+const _MONTH_NAME_GROUP = 1;
+const _DATE_GROUP = 2;
+const _DATE_TO_GROUP = 3;
+const _YEAR_GROUP = 4;
 
 /**
  * The parser for parsing US's date format that begin with month's name.
@@ -51,31 +51,32 @@ class ENMonthNameMiddleEndianParser
 
   @override
   innerExtract(ParsingContext context, RegExpChronoMatch match) {
-    final month = MONTH_DICTIONARY[match[MONTH_NAME_GROUP]!.toLowerCase()]!;
-    final day = parseOrdinalNumberPattern(match[DATE_GROUP]!)!;
+    final mStr = match[_MONTH_NAME_GROUP]!.toLowerCase();
+    final month = MONTH_DICTIONARY[mStr]!;
+    final day = parseOrdinalNumberPattern(match[_DATE_GROUP]!)!;
     if (day > 31) {
       return null;
     }
 
     final components = context.createParsingComponents({
-      day: day,
-      month: month,
+      Component.day: day,
+      Component.month: month,
     });
 
-    if (match[YEAR_GROUP] != null) {
-      final year = parseYear(match[YEAR_GROUP]!)!;
+    if (match[_YEAR_GROUP] != null) {
+      final year = parseYear(match[_YEAR_GROUP]!)!;
       components.assign(Component.year, year);
     } else {
       final year = findYearClosestToRef(context.reference.instant, day, month);
       components.imply(Component.year, year);
     }
 
-    if (match[DATE_TO_GROUP] == null) {
+    if (match[_DATE_TO_GROUP] == null) {
       return components;
     }
 
     // Text can be 'range' value. Such as 'January 12 - 13, 2012'
-    final endDate = parseOrdinalNumberPattern(match[DATE_TO_GROUP]!)!;
+    final endDate = parseOrdinalNumberPattern(match[_DATE_TO_GROUP]!)!;
     final result = context.createParsingResult(match.index, match[0]);
     result.start = components;
     result.end = components.clone();

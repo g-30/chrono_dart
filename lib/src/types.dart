@@ -153,20 +153,30 @@ enum Month implements EnumId {
 class RegExpChronoMatch {
   final RegExpMatch original;
 
-  final List<String?> _groups;
+  final Map<int, String?> _groups = {};
 
-  RegExpChronoMatch(this.original)
-      : index = original.start,
-        _groups = List.generate(
-            original.groupCount, (index) => original.group(index),
-            growable: false);
+  RegExpChronoMatch(this.original) : index = original.start;
+
+  static RegExpChronoMatch? matchOrNull(RegExpMatch? regex) {
+    if (regex == null) {
+      return null;
+    }
+    return RegExpChronoMatch(regex);
+  }
 
   int get groupCount => original.groupCount;
 
-  String? operator [](int group) => _groups[group];
+  String? operator [](int group) => group > groupCount
+      ? null
+      : (_groups.containsKey(group) ? _groups[group] : original[group]);
+
   void operator []=(int index, String? value) {
     _groups[index] = value;
   }
 
   int index;
+
+  @override
+  String toString() =>
+      '''RegExpChronoMatch { index: $index, _groups: $_groups }''';
 }

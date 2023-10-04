@@ -306,7 +306,7 @@ class ParsingResult implements ParsedResult {
   ])  : start = start ?? ParsingComponents(reference),
         refDate = reference.instant;
 
-  clone() {
+  ParsingResult clone() {
     final result = ParsingResult(reference, index, text);
     result.start = start.clone();
     result.end = end?.clone();
@@ -332,6 +332,6 @@ class ParsingResult implements ParsedResult {
   @override
   toString() {
     final tags = this.tags().toList();
-    return '''[ParsingResult {index: $index, text: '$text', tags: ${jsonEncode(tags)} ...}]''';
+    return '''ParsingResult {index: $index, text: '$text', tags: ${jsonEncode(tags)}, date: ${date()}}''';
   }
 }

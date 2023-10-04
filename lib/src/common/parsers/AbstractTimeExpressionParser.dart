@@ -23,7 +23,7 @@ RegExp primaryTimePattern(
         ")?" +
         "(?:\\s*(a\\.m\\.|p\\.m\\.|am?|pm?))?" +
         primarySuffix,
-    caseSensitive: flags.contains('i'),
+    caseSensitive: !flags.toLowerCase().contains('i'),
   );
 }
 
@@ -363,8 +363,8 @@ abstract class AbstractTimeExpressionParser implements Parser {
       }
 
       // If it ends only with numbers above 24, e.g. "at 25"
-      final endingNumberVal = int.parse(endingNumbers);
-      if (endingNumberVal > 24) {
+      final endingNumberVal = int.tryParse(endingNumbers);
+      if ((endingNumberVal ?? 0) > 24) {
         return null;
       }
     }

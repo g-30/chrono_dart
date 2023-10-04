@@ -20,13 +20,14 @@ abstract class AbstractParserWithWordBoundaryChecking implements Parser {
   @override
   RegExp pattern(ParsingContext context) {
     final innerPattern = this.innerPattern(context);
-    if (innerPattern == _cachedInnerPattern) {
+    if (innerPattern.pattern == _cachedInnerPattern?.pattern) {
       return _cachedPattern!;
     }
 
     _cachedPattern = RegExp("${patternLeftBoundary()}${innerPattern.pattern}",
         caseSensitive: innerPattern.isCaseSensitive,
-        multiLine: innerPattern.isMultiLine);
+        multiLine: innerPattern.isMultiLine,
+        dotAll: innerPattern.isDotAll);
     _cachedInnerPattern = innerPattern;
     return _cachedPattern!;
   }
@@ -36,7 +37,7 @@ abstract class AbstractParserWithWordBoundaryChecking implements Parser {
     final header = match[1] ?? "";
     match.index = match.index + header.length;
     match[0] = match[0]!.substring(header.length);
-    for (var i = 2; i < match.groupCount; i++) {
+    for (var i = 2; i <= match.groupCount; i++) {
       match[i - 1] = match[i];
     }
 

@@ -106,19 +106,22 @@ class Chrono {
 
     final originalText = context.text;
     var remainingText = context.text;
-    var match = pattern.firstMatch(remainingText);
-    int matchIndex = match?.start ?? 0;
+    var match =
+        RegExpChronoMatch.matchOrNull(pattern.firstMatch(remainingText));
 
     while (match != null) {
       // Calculate match index on the full text;
-      final index = match.start + originalText.length - remainingText.length;
-      matchIndex = index;
+      final index = match.index + originalText.length - remainingText.length;
+      match.index = index;
 
-      final result = parser.extract(context, RegExpChronoMatch(match));
+      final result = parser.extract(context, match);
       if (result == null) {
         // If fails, move on by 1
-        remainingText = originalText.substring(matchIndex + 1);
-        match = pattern.firstMatch(remainingText);
+        remainingText = match.index + 1 < originalText.length
+            ? originalText.substring(match.index + 1)
+            : '';
+        match =
+            RegExpChronoMatch.matchOrNull(pattern.firstMatch(remainingText));
         continue;
       }
 
@@ -126,21 +129,22 @@ class Chrono {
       if (result is ParsingResult) {
         parsedResult = result;
       } else if (result is ParsingComponents) {
-        parsedResult = context.createParsingResult(matchIndex, match[0]);
+        parsedResult = context.createParsingResult(match.index, match[0]);
         parsedResult.start = result;
       } else {
         parsedResult =
-            context.createParsingResult(matchIndex, match[0], result);
+            context.createParsingResult(match.index, match[0], result);
       }
 
       final parsedIndex = parsedResult.index;
       final parsedText = parsedResult.text;
-      context.debug(() => print(
-          "${parser.runtimeType} extracted (at index=$parsedIndex) '$parsedText'"));
+      context.debug(() {
+        print("${parser.runtimeType} extracted (at index=$parsedIndex) '$parsedText'");
+      });
 
       results.add(parsedResult);
       remainingText = originalText.substring(parsedIndex + parsedText.length);
-      match = pattern.firstMatch(remainingText);
+      match = RegExpChronoMatch.matchOrNull(pattern.firstMatch(remainingText));
     }
 
     return results;
@@ -168,12 +172,18 @@ class ParsingContext implements DebugHandler {
   ParsingComponents createParsingComponents([dynamic components]) {
     assert(components == null ||
         components is ParsingComponents ||
-        components is Map<Component, int>);
+        components is Map<Component, num>);
     if (components is ParsingComponents) {
       return components;
     }
 
-    return ParsingComponents(reference, components);
+    /// TODO: WARNING: forcing double to int; needs research.
+    final cmps = components == null
+        ? null
+        : Map<Component, num>.from(components)
+            .map((key, val) => MapEntry(key, val.toInt()));
+
+    return ParsingComponents(reference, cmps);
   }
 
   ParsingResult createParsingResult(
@@ -185,10 +195,10 @@ class ParsingContext implements DebugHandler {
     assert(textOrEndIndex is int || textOrEndIndex is String);
     assert(startComponents == null ||
         startComponents is ParsingComponents ||
-        startComponents is Map<Component, int>);
+        startComponents is Map<Component, num>);
     assert(endComponents == null ||
         endComponents is ParsingComponents ||
-        endComponents is Map<Component, int>);
+        endComponents is Map<Component, num>);
     final text = textOrEndIndex is String
         ? textOrEndIndex
         : this.text.substring(index, textOrEndIndex);
@@ -204,7 +214,7 @@ class ParsingContext implements DebugHandler {
 
   @override
   void debug(AsyncDebugBlock block) {
-    if (option.debug) {
+    if (option.debug != null) {
       if (option.debug is Function) {
         option.debug(block);
       } else {

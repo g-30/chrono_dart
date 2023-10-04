@@ -7,6 +7,6 @@ import '../../../common/refiners/AbstractMergeDateTimeRefiner.dart';
 class ENMergeDateTimeRefiner extends AbstractMergeDateTimeRefiner {
   @override
   RegExp patternBetween() {
-    return RegExp("^\\s*(T|at|after|before|on|of|,|-)?\\s*\$");
+    return RegExp(r'^\s*(T|at|after|before|on|of|,|-)?\s*$', caseSensitive: false);
   }
 }

@@ -297,7 +297,7 @@ DateTime getLastWeekdayOfMonth(int year, Month month, Weekday weekday,
 /// @return timezone offset in minutes
 int? toTimezoneOffset(dynamic timezoneInput,
     [DateTime? date, TimezoneAbbrMap timezoneOverrides = const {}]) {
-  assert(timezoneInput is int || timezoneInput is String);
+  assert(timezoneInput == null || timezoneInput is int || timezoneInput is String);
 
   if (timezoneInput == null) {
     return null;

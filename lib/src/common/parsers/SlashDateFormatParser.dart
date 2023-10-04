@@ -57,7 +57,7 @@ class SlashDateFormatParser implements Parser {
 
     final index = match.index + match[_OPENING_GROUP]!.length;
     final text = match[0]!.substring(match[_OPENING_GROUP]!.length,
-        match[0]!.length - match[_ENDING_GROUP]!.length);
+        match[0]!.length - (match[_ENDING_GROUP]?.length ?? 0));
 
     // '1.12', '1.12.12' is more like a version numbers
     if (RegExp(r'^\d\.\d$').hasMatch(text) ||

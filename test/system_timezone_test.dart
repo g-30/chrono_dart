@@ -4,7 +4,7 @@ import './test_util.dart' show testSingleCase, toBeDate;
 
 void main() {
   final chrono = Chrono();
-  group("Test - Timezone difference on reference example", () {
+  test("Test - Timezone difference on reference example", () {
     testSingleCase(
         chrono,
         "Friday at 4pm",
@@ -17,7 +17,7 @@ void main() {
     });
   });
 
-  group("Test - Timezone difference on default timezone", () {
+  test("Test - Timezone difference on default timezone", () {
     final INPUT = "Friday at 4pm";
     final REF_INSTANT = DateTime(2021, 6, 9, 7, 0, 0);
     final EXPECTED_INSTANT = DateTime(2021, 6, 11, 16, 0, 0);
@@ -49,7 +49,7 @@ void main() {
     });
   });
 
-  group("Test - Timezone difference on reference date", () {
+  test("Test - Timezone difference on reference date", () {
     // 2021-06-06T19:00:00+09:00
     // 2021-06-06T11:00:00+01:00
     final refInstant = DateTime.parse("2021-06-06T19:00:00+09:00");
@@ -73,7 +73,7 @@ void main() {
     });
   });
 
-  group("Test - Timezone difference on written date", () {
+  test("Test - Timezone difference on written date", () {
     // 2021-06-06T19:00:00+09:00
     // 2021-06-06T11:00:00+01:00
     final refInstant = DateTime.parse("2021-06-06T19:00:00+09:00");
@@ -94,7 +94,7 @@ void main() {
     });
   });
 
-  group("Test - Precise [now] mentioned", () {
+  test("Test - Precise [now] mentioned", () {
     final refDate = DateTime.parse("Sat Mar 13 2021 14:22:14+09:00");
 
     testSingleCase(chrono, "now", refDate, (result) {
@@ -131,7 +131,7 @@ void main() {
     });
   });
 
-  group("Test - Precise date/time mentioned", () {
+  test("Test - Precise date/time mentioned", () {
     final text = "Sat Mar 13 2021 14:22:14+09:00";
     final refDate = DateTime.now();
 
