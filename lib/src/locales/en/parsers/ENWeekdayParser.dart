@@ -18,7 +18,7 @@ final _pattern = RegExp(
       "(?:\\s*(?:\\,|\\)|\\）))?" +
       "(?:\\s*(this|last|past|next)\\s*week)?" +
       "(?=\\W|\$)",
-  caseSensitive: true,
+  caseSensitive: false,
 );
 
 const _PREFIX_GROUP = 1;

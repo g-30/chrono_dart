@@ -108,7 +108,8 @@ abstract class AbstractTimeExpressionParser implements Parser {
 
     if (followingMatch == null ||
         // Pattern "YY.YY -XXXX" is more like timezone offset
-        RegExp(r'^\s*([+-])\s*\d{3,4}$').hasMatch(followingMatch[0]!)) {
+        RegExp(r'^\s*([+-])\s*[0-9:]{3,5}$').hasMatch(followingMatch[0]!)) {
+      /// TODO: WARNING: check regex; changed the 'official' version to also catch negative timezones; needs testing.
       return _checkAndReturnWithoutFollowingPattern(result);
     }
 

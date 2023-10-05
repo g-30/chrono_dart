@@ -11,34 +11,35 @@ class ReferenceWithTimezone {
   final DateTime instant;
   final int? timezoneOffset;
 
-  ReferenceWithTimezone([ dynamic input ])
+  ReferenceWithTimezone([dynamic input])
       : assert(input == null || input is ParsingReference || input is DateTime),
-        instant = input is DateTime
+        instant = (input is DateTime
             ? input
-            : ((input is ParsingReference ? input.instant : null) ?? DateTime.now()),
+            : ((input is ParsingReference ? input.instant : null) ??
+                DateTime.now())),
         timezoneOffset = input is! ParsingReference
             ? null
             : toTimezoneOffset(input.timezone, input.instant);
 
-  /// Returns a JS date (system timezone) with the { year, month, day, hour, minute, second } equal to the reference.
+  /// Returns a Dart date (system timezone) with the { year, month, day, hour, minute, second } equal to the reference.
   /// The output's instant is NOT the reference's instant when the reference's and system's timezone are different.
   getDateWithAdjustedTimezone() {
     return DateTime.fromMillisecondsSinceEpoch(instant.millisecondsSinceEpoch +
         getSystemTimezoneAdjustmentMinute(instant) * 60000);
   }
 
-  /// Returns the number minutes difference between the JS date's timezone and the reference timezone.
-  /// @param date
-  /// @param overrideTimezoneOffset
+  /// Returns the number minutes difference between the Dart date's timezone and the reference timezone.
   int getSystemTimezoneAdjustmentMinute(DateTime? date,
       [int? overrideTimezoneOffset]) {
-    if (date != null || date!.millisecondsSinceEpoch < 0) {
+    if (date == null || date.millisecondsSinceEpoch < 0) {
+      // TODO: WARNING: Possibly remove due to JS <-> Dart differences?
       // Javascript date timezone calculation got effect when the time epoch < 0
       // e.g. new DateTime('Tue Feb 02 1300 00:00:00 GMT+0900 (JST)') => Tue Feb 02 1300 00:18:59 GMT+0918 (JST)
       date = DateTime.now();
     }
 
-    final currentTimezoneOffset = -date.timeZoneOffset.inMinutes;
+    /// TODO: WARNING: removed negative sign - seems to work as intended, but needs testing.
+    final currentTimezoneOffset = date.timeZoneOffset.inMinutes;
     final targetTimezoneOffset =
         overrideTimezoneOffset ?? timezoneOffset ?? currentTimezoneOffset;
     return currentTimezoneOffset - targetTimezoneOffset;
@@ -159,7 +160,7 @@ class ParsingComponents implements ParsedComponents {
   }
 
   bool isValidDate() {
-    final date = _dateWithoutTimezoneAdjustment();
+    final date = _dateWithoutTimezoneAdjustment().toLocal();
 
     if (date.year != get(Component.year)) return false;
     if (date.month != (get(Component.month) ?? 999)) return false;
@@ -193,7 +194,7 @@ class ParsingComponents implements ParsedComponents {
     final timezoneAdjustment = reference.getSystemTimezoneAdjustmentMinute(
         date, get(Component.timezoneOffset));
     return DateTime.fromMillisecondsSinceEpoch(
-        date.millisecondsSinceEpoch + timezoneAdjustment * 60000);
+        date.millisecondsSinceEpoch, isUtc: true).add(Duration(minutes: timezoneAdjustment));
   }
 
   ParsingComponents addTag(String tag) {
@@ -223,8 +224,7 @@ class ParsingComponents implements ParsedComponents {
       get(Component.second) ?? 0,
       get(Component.millisecond) ?? 0,
     );
-
-    return date.copyWith(year: get(Component.year));
+    return date;
   }
 
   static ParsingComponents createRelativeFromReference(
@@ -245,13 +245,13 @@ class ParsingComponents implements ParsedComponents {
       assignSimilarDate(components, date);
       if (reference.timezoneOffset != null) {
         components.assign(Component.timezoneOffset,
-            -reference.instant.timeZoneOffset.inMinutes);
+            -reference.instant.toLocal().timeZoneOffset.inMinutes);
       }
     } else {
       implySimilarTime(components, date);
       if (reference.timezoneOffset != null) {
         components.imply(Component.timezoneOffset,
-            -reference.instant.timeZoneOffset.inMinutes);
+            -reference.instant.toLocal().timeZoneOffset.inMinutes);
       }
 
       if (fragments["d"] != null) {

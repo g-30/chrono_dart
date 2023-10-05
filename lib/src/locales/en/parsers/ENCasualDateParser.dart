@@ -48,7 +48,7 @@ class ENCasualDateParser extends AbstractParserWithWordBoundaryChecking {
       default:
         if (RegExp(r'last\s*night').hasMatch(lowerText)) {
           if (targetDate.hour() > 6) {
-            targetDate = targetDate.add(-1, "day")!;
+            targetDate = targetDate.add(-1, 'd')!;
           }
 
           assignSimilarDate(component, targetDate);

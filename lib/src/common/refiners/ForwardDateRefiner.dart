@@ -33,12 +33,12 @@ class ForwardDateRefiner implements Refiner {
 
       if (result.start.isOnlyTime() &&
           refMoment.isAfter(result.start.dayjs())) {
-        refMoment = refMoment.add(1, "day")!;
+        refMoment = refMoment.add(1, 'd')!;
         implySimilarDate(result.start, refMoment);
         if (result.end != null && result.end!.isOnlyTime()) {
           implySimilarDate(result.end!, refMoment);
           if (result.start.dayjs().isAfter(result.end!.dayjs())) {
-            refMoment = refMoment.add(1, "day")!;
+            refMoment = refMoment.add(1, 'd')!;
             implySimilarDate(result.end!, refMoment);
           }
         }

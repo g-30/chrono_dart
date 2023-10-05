@@ -259,7 +259,7 @@ int? parseYear(String match) {
 final SINGLE_TIME_UNIT_PATTERN =
     "($NUMBER_PATTERN)\\s{0,3}(${matchAnyPattern(TIME_UNIT_DICTIONARY)})";
 final SINGLE_TIME_UNIT_REGEX =
-    RegExp(SINGLE_TIME_UNIT_PATTERN, caseSensitive: true);
+    RegExp(SINGLE_TIME_UNIT_PATTERN, caseSensitive: false);
 
 final SINGLE_TIME_UNIT_NO_ABBR_PATTERN =
     "($NUMBER_PATTERN)\\s{0,3}(${matchAnyPattern(TIME_UNIT_DICTIONARY_NO_ABBR)})";

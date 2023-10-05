@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:day/day.dart' as dayjs;
 import './types.dart' show TimezoneAbbrMap, Weekday, Month;
 
@@ -332,8 +330,6 @@ int? toTimezoneOffset(dynamic timezoneInput,
           .isAfter(matchedTimezone.dstEnd(date.year))) {
     return matchedTimezone.timezoneOffsetDuringDst;
   }
-
-  debugger();
 
   // refDate is not during DST => return non-DST offset
   return matchedTimezone.timezoneOffsetNonDst;

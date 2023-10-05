@@ -95,7 +95,7 @@ void main() {
   });
 
   test("Test - Precise [now] mentioned", () {
-    final refDate = DateTime.parse("Sat Mar 13 2021 14:22:14+09:00");
+    final refDate = DateTime.parse("2021-13-03T14:22:14+09:00");
 
     testSingleCase(chrono, "now", refDate, (result) {
       expect(result, toBeDate(refDate));
@@ -133,16 +133,17 @@ void main() {
 
   test("Test - Precise date/time mentioned", () {
     final text = "Sat Mar 13 2021 14:22:14+09:00";
+    final dartDate = DateTime.parse('2021-03-13T14:22:14+09:00');
     final refDate = DateTime.now();
 
     testSingleCase(chrono, text, refDate, (result, text) {
-      expect(result, toBeDate(DateTime.parse(text)));
+      expect(result, toBeDate(dartDate));
     });
 
     testSingleCase(
         chrono, text, ParsingReference(instant: refDate),
         (result) {
-      expect(result, toBeDate(DateTime.parse(text)));
+      expect(result, toBeDate(dartDate));
     });
 
     testSingleCase(
@@ -150,7 +151,7 @@ void main() {
         text,
         
             ParsingReference(instant: refDate, timezone: 540), (result) {
-      expect(result, toBeDate(DateTime.parse(text)));
+      expect(result, toBeDate(dartDate));
     });
 
     testSingleCase(
@@ -158,7 +159,7 @@ void main() {
         text,
         
             ParsingReference(instant: refDate, timezone: "JST"), (result) {
-      expect(result, toBeDate(DateTime.parse(text)));
+      expect(result, toBeDate(dartDate));
     });
 
     testSingleCase(
@@ -166,7 +167,7 @@ void main() {
         text,
         
             ParsingReference(instant: refDate, timezone: -300), (result) {
-      expect(result, toBeDate(DateTime.parse(text)));
+      expect(result, toBeDate(dartDate));
     });
   });
 }

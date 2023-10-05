@@ -82,48 +82,22 @@ int measureMilliSec(Function block) {
   return endTime - startTime;
 }
 
-Matcher toBeDate(Object? matcher) => _ToBeDate(wrapMatcher(matcher));
-
-class _ToBeDate extends Matcher {
-  final Matcher _matcher;
-  _ToBeDate(this._matcher);
-
-  @override
-  bool matches(Object? item, Map matchState) {
-    if ((item as dynamic).date is! Function) {
-      return false;
+Matcher toBeDate(DateTime matcher) => wrapMatcher((Object? item) {
+  if (item is DateTime) {
+    if (item.millisecondsSinceEpoch == matcher.millisecondsSinceEpoch) {
+      return true;
     }
-    try {
-      final actualDate = (item as ParsedResult).date();
-      return _matcher.matches(actualDate, matchState);
-    } catch (e) {
-      return false;
-    }
+    throw 'Actual: $item, expected: $matcher';
   }
-
-  @override
-  Description describe(Description description) =>
-      description.add("Got single result").addDescriptionOf(_matcher);
-
-  @override
-  Description describeMismatch(Object? item, Description mismatchDescription,
-      Map matchState, bool verbose) {
-    if ((item as dynamic).date is! Function) {
-      return mismatchDescription
-          .addDescriptionOf(item)
-          .add(" is not a ParsedResult or ParsedComponent");
+  if ((item as dynamic).date is Function) {
+    final date = (item as dynamic).date() as DateTime;
+    if (date.millisecondsSinceEpoch == matcher.millisecondsSinceEpoch) {
+      return true;
     }
-    try {
-      return mismatchDescription
-          .add('Expected date to be: ')
-          .addDescriptionOf(item)
-          .add(' Received: ')
-          .addDescriptionOf((item as ParsedResult).date());
-    } catch (e) {
-      return mismatchDescription.add('Error executing time functions');
-    }
+    throw 'Actual: $date, expected: $matcher';
   }
-}
+  throw 'Actual is not a date object';
+});
 
 Matcher toBeSingleOnText(Object? matcher) =>
     _SingleOnText(wrapMatcher(matcher));
@@ -144,7 +118,7 @@ class _SingleOnText extends Matcher {
 
   @override
   Description describe(Description description) =>
-      description.add("Got single result").addDescriptionOf(_matcher);
+      description.add("Got single result ").addDescriptionOf(_matcher);
 
   @override
   Description describeMismatch(Object? item, Description mismatchDescription,

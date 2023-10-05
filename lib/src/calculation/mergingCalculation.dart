@@ -18,7 +18,7 @@ ParsingResult mergeDateTimeResult(
         endDateTime.date().millisecondsSinceEpoch < result.start.date().millisecondsSinceEpoch) {
       // For example,  "Tuesday 9pm - 1am" the ending should actually be 1am on the next day.
       // We need to add to ending by another day.
-      final nextDayJs = endDateTime.dayjs().add(1, "day")!;
+      final nextDayJs = endDateTime.dayjs().add(1, 'd')!;
       if (endDateTime.isCertain(Component.day)) {
         assignSimilarDate(endDateTime, nextDayJs);
       } else {

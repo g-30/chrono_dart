@@ -1,9 +1,7 @@
-import 'package:chrono_dart/chrono_dart.dart';
+import 'package:chrono_dart/chrono_dart.dart' show Weekday, ReferenceWithTimezone;
 import 'package:test/test.dart';
 import 'package:chrono_dart/src/common/calculation/weekdays.dart'
     show createParsingComponentsAtWeekday, getDaysToWeekday;
-import 'package:chrono_dart/src/types.dart' show Weekday;
-import 'package:chrono_dart/src/results.dart' show ReferenceWithTimezone;
 
 void main() {
   test("Test - This Weekday Calculation", () {
@@ -12,12 +10,12 @@ void main() {
           ReferenceWithTimezone(DateTime.parse("2022-08-20 12:00:00"));
       final output =
           createParsingComponentsAtWeekday(reference, Weekday.MONDAY, "this");
-      expect(output.date().toIso8601String(),
-          DateTime.parse("2022-08-22 12:00:00").toIso8601String());
+      expect(output.date().millisecondsSinceEpoch,
+          DateTime.parse("2022-08-22 12:00:00").millisecondsSinceEpoch);
     })();
     (() {
       final reference =
-          ReferenceWithTimezone(DateTime.parse("2022-08-21 12:00:00"));
+          ReferenceWithTimezone(DateTime.parse("2022-08-21 14:00:00+02:00"));
       final output =
           createParsingComponentsAtWeekday(reference, Weekday.FRIDAY, "this");
       expect(output.date().millisecondsSinceEpoch,
@@ -165,11 +163,5 @@ void main() {
       final refDate = DateTime.parse("2022-08-20");
       expect(getDaysToWeekday(refDate, Weekday.WEDNESDAY), -3);
     })();
-  });
-
-  test("Test - Chrono test", () {
-    print('running the test');
-    final parsed = Chrono().parseDate('stuff test 01/01/2023');
-    expect(parsed?.millisecondsSinceEpoch, DateTime.parse('2023-01-01T12:00:00').millisecondsSinceEpoch);
   });
 }

@@ -3,13 +3,13 @@ import '../results.dart' show ParsingComponents;
 import '../types.dart' show Meridiem, Component;
 
 void assignTheNextDay(ParsingComponents component, dayjs.Day targetDayJs) {
-  targetDayJs = targetDayJs.add(1, "day")!;
+  targetDayJs = targetDayJs.add(1, 'd')!;
   assignSimilarDate(component, targetDayJs);
   implySimilarTime(component, targetDayJs);
 }
 
 void implyTheNextDay(ParsingComponents component, dayjs.Day targetDayJs) {
-  targetDayJs = targetDayJs.add(1, "day")!;
+  targetDayJs = targetDayJs.add(1, 'd')!;
   implySimilarDate(component, targetDayJs);
   implySimilarTime(component, targetDayJs);
 }
