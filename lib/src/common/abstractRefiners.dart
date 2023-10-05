@@ -34,8 +34,12 @@ abstract class MergingRefiner implements Refiner {
     for (int i = 1; i < results.length; i++) {
       nextResult = results[i];
 
-      final textBetween = context.text.substring(
-          curResult!.index + curResult.text.length, nextResult.index);
+      var iA = curResult!.index + curResult.text.length;
+      var iB = nextResult.index;
+      if (iA > iB) {
+        (iA, iB) = (iB, iA); // swap
+      }
+      final textBetween = context.text.substring(iA, iB);
       if (!shouldMergeResults(textBetween, curResult, nextResult, context)) {
         mergedResults.add(curResult);
         curResult = nextResult;
