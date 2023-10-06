@@ -192,12 +192,12 @@ test("Test - Add custom parser with tags example", () {
 
   test("Test - Replace a parser example", () {
     final custom = chrono.casual.clone();
-    testSingleCase(custom, "next 5m", DateTime.utc(2016, 10, 1, 14, 52),
+    testSingleCase(custom, "next 5m", DateTime(2016, 10, 1, 14, 52),
         (result, text) {
       expect(result.start.get(chrono.Component.hour), 14);
       expect(result.start.get(chrono.Component.minute), 57);
     });
-    testSingleCase(custom, "next 5 minutes", DateTime.utc(2016, 10, 1, 14, 52),
+    testSingleCase(custom, "next 5 minutes", DateTime(2016, 10, 1, 14, 52),
         (result, text) {
       expect(result.start.get(chrono.Component.hour), 14);
       expect(result.start.get(chrono.Component.minute), 57);
@@ -207,7 +207,7 @@ test("Test - Add custom parser with tags example", () {
         .indexWhere((r) => r is ENTimeUnitCasualRelativeFormatParser);
     custom.parsers[index] = ENTimeUnitCasualRelativeFormatParser(false);
     testUnexpectedResult(custom, "next 5m");
-    testSingleCase(custom, "next 5 minutes", DateTime.utc(2016, 10, 1, 14, 52),
+    testSingleCase(custom, "next 5 minutes", DateTime(2016, 10, 1, 14, 52),
         (result, text) {
       expect(result.start.get(chrono.Component.hour), 14);
       expect(result.start.get(chrono.Component.minute), 57);
@@ -216,12 +216,9 @@ test("Test - Add custom parser with tags example", () {
 
   test("Test - Simple date parse", () {
     final chronoInst = chrono.casual;
-    // final date = chronoInst.parseDate("I'll see you next Monday", DateTime.utc(2023, 10, 05, 12));
-    final tst = chronoInst.parseDate("I'll see you next Monday at 15:30", DateTime.now());
-    print('tst: ${tst?.toIso8601String()} - ${tst?.millisecondsSinceEpoch}');
-    expect(1, equals(1));
-    // expect(date, isNotNull);
-    // expect(date, toBeDate(DateTime.utc(2023, 10, 09, 12)));
+    final date = chronoInst.parseDate("I'll see you next Monday at 3pm", DateTime(2023, 10, 05));
+    expect(date, isNotNull);
+    expect(date, toBeDate(DateTime(2023, 10, 09, 15)));
   });
 
   test("Test - Compare with native dart", () {

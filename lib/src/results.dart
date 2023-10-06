@@ -16,7 +16,7 @@ class ReferenceWithTimezone {
         instant = (input is DateTime
             ? input
             : ((input is ParsingReference ? input.instant : null) ??
-                DateTime.now())),
+                DateTime.now())).toLocal(),
         timezoneOffset = input is! ParsingReference
             ? null
             : toTimezoneOffset(input.timezone, input.instant);
@@ -160,7 +160,10 @@ class ParsingComponents implements ParsedComponents {
   }
 
   bool isValidDate() {
-    final date = _dateWithoutTimezoneAdjustment().toLocal();
+    var date = _dateWithoutTimezoneAdjustment();
+    if (reference.instant.isUtc) {
+      date = date.toUtc();
+    }
 
     if (date.year != get(Component.year)) return false;
     if (date.month != (get(Component.month) ?? 999)) return false;
@@ -215,7 +218,7 @@ class ParsingComponents implements ParsedComponents {
   }
 
   DateTime _dateWithoutTimezoneAdjustment() {
-    final date = DateTime(
+    return DateTime(
       get(Component.year)!,
       get(Component.month) ?? 1,
       get(Component.day) ?? 1,
@@ -224,7 +227,6 @@ class ParsingComponents implements ParsedComponents {
       get(Component.second) ?? 0,
       get(Component.millisecond) ?? 0,
     );
-    return date;
   }
 
   static ParsingComponents createRelativeFromReference(
