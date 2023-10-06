@@ -2,6 +2,9 @@
 
 Port of Chrono (https://github.com/wanasit/chrono) to Dart lang.
 
+![pub.dev/packages/chrono_dart](https://img.shields.io/pub/v/chrono_dart.svg "chrono_dart on pub.dev")
+![MIT License](https://img.shields.io/github/license/g1eny0ung/chrono_dart.dart.svg "MIT License")
+
 A natural language date parser in Dart.
 
 It is designed to handle most date/time format and extract information from any given text:
