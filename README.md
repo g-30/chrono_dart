@@ -1,9 +1,9 @@
 # Chrono - Date parser for Dart (Flutter)
 
+A natural language date parser in Dart. Finds and extracts dates from user-generated text content.
+
 [![pub.dev/packages/chrono_dart](https://img.shields.io/pub/v/chrono_dart.svg "chrono_dart on pub.dev")](https://pub.dev/packages/chrono_dart)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-A natural language date parser in Dart.
 
 It is designed to handle most date/time format and extract information from any given text:
 
@@ -16,20 +16,21 @@ It is designed to handle most date/time format and extract information from any 
 * 2014-11-30T08:15:30-05:30
 
 # Usage
-Simply pass a string to functions chrono.parseDate or chrono.parse.
+1. Install manually or via pub - `dart pub add chrono_dart`
+2. Simply pass a string to functions Chrono.parseDate or Chrono.parse.
 
 ```dart
-import 'package:chrono_dart/chrono_dart.dart' as chrono;
+import 'package:chrono_dart/chrono_dart.dart' show Chrono;
 
-chrono.parseDate('An appointment on Sep 12');
-// Tue Sep 12 2023 12:00:00 GMT-0500 (CDT)
+Chrono.parseDate('An appointment on Sep 12');
+// DateTime('2023-09-12 12:00:00.000Z')
     
-chrono.parse('An appointment on Sep 12');
-/* [<ParsedResult>{ 
+Chrono.parse('An appointment on Sep 12');
+/* [<ParsingResult>{ 
     index: 18,
     text: 'Sep 12',
     date() => DateTime('2023-09-12T12:00:00'),
-    start: ...
+    ...
 }] */
 ```
 
