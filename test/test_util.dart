@@ -1,9 +1,9 @@
 import 'package:test/test.dart';
 import 'package:chrono_dart/src/debugging.dart' show BufferedDebugHandler;
 import 'package:chrono_dart/chrono_dart.dart'
-    show Chrono, ParsedResult, ParsingOption, ParsingReference;
+    show ChronoInstance, ParsedResult, ParsingOption, ParsingReference;
 
-typedef ChronoLike = Chrono;
+typedef ChronoLike = ChronoInstance;
 typedef CheckResult = void Function(ParsedResult p, String text);
 
 void testSingleCase(

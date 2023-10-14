@@ -1,6 +1,6 @@
 import 'package:chrono_dart/src/common/parsers/ISOFormatParser.dart';
 import 'package:test/test.dart';
-import 'package:chrono_dart/chrono_dart.dart' as chrono;
+import 'package:chrono_dart/chrono_dart.dart';
 import 'package:chrono_dart/src/common/refiners/UnlikelyFormatFilter.dart';
 import 'package:chrono_dart/src/locales/en/parsers/ENTimeUnitCasualRelativeFormatParser.dart';
 // import 'package:chrono_dart/src/locales/en/parsers/ENWeekdayParser.dart';
@@ -8,36 +8,36 @@ import './test_util.dart' show testSingleCase, testUnexpectedResult, toBeDate;
 
 void main() {
   test("Test - Load modules", () {
-    expect(chrono.Chrono, isNotNull);
+    expect(Chrono, isNotNull);
 
-    expect(chrono.parse, isNotNull);
+    expect(Chrono.parse, isNotNull);
 
-    expect(chrono.parseDate, isNotNull);
+    expect(Chrono.parseDate, isNotNull);
 
-    expect(chrono.casual, isNotNull);
+    expect(Chrono.casual, isNotNull);
 
-    expect(chrono.strict, isNotNull);
+    expect(Chrono.strict, isNotNull);
   });
 
   test("Test - Basic parse date functions", () {
-    expect(chrono.parseDate("7:00PM July 5th, 2020")?.millisecondsSinceEpoch,
+    expect(Chrono.parseDate("7:00PM July 5th, 2020")?.millisecondsSinceEpoch,
         DateTime(2020, 7, 5, 19).millisecondsSinceEpoch);
 
     expect(
-        chrono.strict
+        Chrono.strict
             .parseDate("7:00PM July 5th, 2020")
             ?.millisecondsSinceEpoch,
         DateTime(2020, 7, 5, 19).millisecondsSinceEpoch);
 
     expect(
-        chrono.casual
+        Chrono.casual
             .parseDate("7:00PM July 5th, 2020")
             ?.millisecondsSinceEpoch,
         DateTime(2020, 7, 5, 19).millisecondsSinceEpoch);
   });
 
 /*test("Test - Add custom parser", () {
-    final chrono.Parser customParser = {
+    final Chrono.Parser customParser = {
         pattern: () {
             return /(\d{1,2})(st|nd|rd|th)/i;
         },
@@ -51,17 +51,17 @@ void main() {
         },
     };
 
-    final custom = chrono.Chrono();
+    final custom = Chrono.Chrono();
     custom.parsers.add(customParser);
     testSingleCase(custom, "meeting on 25th", DateTime(2017, 11, 19), (result) {
         expect(result.text, "25th");
-        expect(result.start.get(chrono.Component.month), 11);
-        expect(result.start.get(chrono.Component.day), 25);
+        expect(result.start.get(Component.month), 11);
+        expect(result.start.get(Component.day), 25);
     });
 });
 
 test("Test - Add custom parser example", () {
-    final custom = chrono.casual.clone();
+    final custom = Chrono.casual.clone();
     custom.parsers.add({
         pattern: () {
             return /\bChristmas\b/i;
@@ -76,18 +76,18 @@ test("Test - Add custom parser example", () {
 
     testSingleCase(custom, "I'll arrive at 2.30AM on Christmas", (result) {
         expect(result.text, "at 2.30AM on Christmas");
-        expect(result.start.get(chrono.Component.month), 12);
-        expect(result.start.get(chrono.Component.day), 25);
-        expect(result.start.get(chrono.Component.hour), 2);
-        expect(result.start.get(chrono.Component.minute), 30);
+        expect(result.start.get(Component.month), 12);
+        expect(result.start.get(Component.day), 25);
+        expect(result.start.get(Component.hour), 2);
+        expect(result.start.get(Component.minute), 30);
     });
 
     testSingleCase(custom, "I'll arrive at Christmas night", (result) {
         expect(result.text, "Christmas night");
-        expect(result.start.get(chrono.Component.month), 12);
-        expect(result.start.get(chrono.Component.day), 25);
-        expect(result.start.get(chrono.Component.meridiem), Meridiem.PM);
-        expect(result.start.get(chrono.Component.meridiem), 1);
+        expect(result.start.get(Component.month), 12);
+        expect(result.start.get(Component.day), 25);
+        expect(result.start.get(Component.meridiem), Meridiem.PM);
+        expect(result.start.get(Component.meridiem), 1);
     });
 
     testSingleCase(custom, "Doing something tomorrow", (result) {
@@ -96,7 +96,7 @@ test("Test - Add custom parser example", () {
 });
 
 test("Test - Add custom refiner example", () {
-    final custom = chrono.casual.clone();
+    final custom = Chrono.casual.clone();
     custom.refiners.add({
         refine: (context, results) {
             // If there is no AM/PM (meridiem) specified,
@@ -104,11 +104,11 @@ test("Test - Add custom refiner example", () {
             results.forEach((result) {
                 if (
                     !result.start.isCertain("meridiem") &&
-                    result.start.get(chrono.Component.hour) >= 1 &&
-                    result.start.get(chrono.Component.hour) < 4
+                    result.start.get(Component.hour) >= 1 &&
+                    result.start.get(Component.hour) < 4
                 ) {
                     result.start.assign(Component.meridiem, Meridiem.PM);
-                    result.start.assign(Component.hour, result.start.get(chrono.Component.hour) + 12);
+                    result.start.assign(Component.hour, result.start.get(Component.hour) + 12);
                 }
             });
             return results;
@@ -117,19 +117,19 @@ test("Test - Add custom refiner example", () {
 
     testSingleCase(custom, "This is at 2.30", (result) {
         expect(result.text, "at 2.30");
-        expect(result.start.get(chrono.Component.hour), 14);
-        expect(result.start.get(chrono.Component.minute), 30);
+        expect(result.start.get(Component.hour), 14);
+        expect(result.start.get(Component.minute), 30);
     });
 
     testSingleCase(custom, "This is at 2.30 AM", (result) {
         expect(result.text, "at 2.30 AM");
-        expect(result.start.get(chrono.Component.hour), 2);
-        expect(result.start.get(chrono.Component.minute), 30);
+        expect(result.start.get(Component.hour), 2);
+        expect(result.start.get(Component.minute), 30);
     });
 });
 
 test("Test - Add custom parser with tags example", () {
-    final custom = chrono.casual.clone();
+    final custom = Chrono.casual.clone();
     custom.parsers.add({
         pattern: () {
             return /\bChristmas\b/i;
@@ -165,42 +165,42 @@ test("Test - Add custom parser with tags example", () {
 });*/
 
   test("Test - Remove parsers example", () {
-    final custom = chrono.strict.clone();
+    final custom = Chrono.strict.clone();
     custom.parsers =
         custom.parsers.whereType<ISOFormatParser>().toList();
     // custom.parsers.add(ISOFormatParser());
 
     testSingleCase(custom, "2018-10-06", (result) {
       expect(result.text, "2018-10-06");
-      expect(result.start.get(chrono.Component.year), 2018);
-      expect(result.start.get(chrono.Component.month), 10);
-      expect(result.start.get(chrono.Component.day), 6);
+      expect(result.start.get(Component.year), 2018);
+      expect(result.start.get(Component.month), 10);
+      expect(result.start.get(Component.day), 6);
     });
   });
 
   test("Test - Remove a refiner example", () {
-    final custom = chrono.casual.clone();
+    final custom = Chrono.casual.clone();
     custom.refiners =
         custom.refiners.where((r) => r is! UnlikelyFormatFilter).toList();
 
     testSingleCase(custom, "This is at 2.30", (result) {
       expect(result.text, "at 2.30");
-      expect(result.start.get(chrono.Component.hour), 2);
-      expect(result.start.get(chrono.Component.minute), 30);
+      expect(result.start.get(Component.hour), 2);
+      expect(result.start.get(Component.minute), 30);
     });
   });
 
   test("Test - Replace a parser example", () {
-    final custom = chrono.casual.clone();
+    final custom = Chrono.casual.clone();
     testSingleCase(custom, "next 5m", DateTime(2016, 10, 1, 14, 52),
         (result, text) {
-      expect(result.start.get(chrono.Component.hour), 14);
-      expect(result.start.get(chrono.Component.minute), 57);
+      expect(result.start.get(Component.hour), 14);
+      expect(result.start.get(Component.minute), 57);
     });
     testSingleCase(custom, "next 5 minutes", DateTime(2016, 10, 1, 14, 52),
         (result, text) {
-      expect(result.start.get(chrono.Component.hour), 14);
-      expect(result.start.get(chrono.Component.minute), 57);
+      expect(result.start.get(Component.hour), 14);
+      expect(result.start.get(Component.minute), 57);
     });
 
     final index = custom.parsers
@@ -209,20 +209,20 @@ test("Test - Add custom parser with tags example", () {
     testUnexpectedResult(custom, "next 5m");
     testSingleCase(custom, "next 5 minutes", DateTime(2016, 10, 1, 14, 52),
         (result, text) {
-      expect(result.start.get(chrono.Component.hour), 14);
-      expect(result.start.get(chrono.Component.minute), 57);
+      expect(result.start.get(Component.hour), 14);
+      expect(result.start.get(Component.minute), 57);
     });
   });
 
   test("Test - Simple date parse", () {
-    final chronoInst = chrono.casual;
+    final chronoInst = Chrono.casual;
     final date = chronoInst.parseDate("I'll see you next Monday at 3pm", DateTime(2023, 10, 05));
     expect(date, isNotNull);
     expect(date, toBeDate(DateTime(2023, 10, 09, 15)));
   });
 
   test("Test - Compare with native dart", () {
-    final chronoInst = chrono.Chrono();
+    final chronoInst = Chrono.instance;
 
     void testByCompareWithNative(text) {
       final expectedDate = DateTime.parse(text);

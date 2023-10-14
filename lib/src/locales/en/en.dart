@@ -2,7 +2,7 @@
 ///
 /// @module
 
-import '../../chrono.dart' show Chrono;
+import '../../../chrono_dart.dart' show ChronoInstance;
 import '../../types.dart' show ParsedResult, ParsingOption;
 
 import './configuration.dart';
@@ -10,13 +10,13 @@ import './configuration.dart';
 final enConfig = ENDefaultConfiguration();
 
 /// Chrono object configured for parsing *casual* English
-final casual = Chrono(enConfig.createCasualConfiguration(false));
+final casual = ChronoInstance(enConfig.createCasualConfiguration(false));
 
-/// Chrono object configured for parsing *strict* English
-final strict = Chrono(enConfig.createConfiguration(true, false));
+/// ChronoInstance object configured for parsing *strict* English
+final strict = ChronoInstance(enConfig.createConfiguration(true, false));
 
-/// Chrono object configured for parsing *UK-style* English
-final GB = Chrono(enConfig.createConfiguration(false, true));
+/// ChronoInstance object configured for parsing *UK-style* English
+final GB = ChronoInstance(enConfig.createConfiguration(false, true));
 
 /// A shortcut for en.casual.parse()
 List<ParsedResult> parse(String text, [DateTime? ref, ParsingOption? option]) {

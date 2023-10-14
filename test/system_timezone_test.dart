@@ -3,7 +3,7 @@ import 'package:chrono_dart/chrono_dart.dart';
 import './test_util.dart' show testSingleCase, toBeDate;
 
 void main() {
-  final chrono = Chrono();
+  final chrono = Chrono.instance;
   test("Test - Timezone difference on reference example", () {
     testSingleCase(
         chrono,

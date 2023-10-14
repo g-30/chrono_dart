@@ -45,21 +45,21 @@ abstract class Refiner {
 }
 
 /// The Chrono object.
-class Chrono {
+class ChronoInstance {
   List<Parser> parsers;
   List<Refiner> refiners;
 
   static const defaultConfig = ENDefaultConfiguration();
 
-  Chrono([Configuration? configuration])
+  ChronoInstance([Configuration? configuration])
       : parsers = (configuration ?? defaultConfig.createCasualConfiguration())
             .parsers,
         refiners = (configuration ?? defaultConfig.createCasualConfiguration())
             .refiners;
 
   /// Create a shallow copy of the Chrono object with the same configuration (`parsers` and `refiners`)
-  Chrono clone() {
-    return Chrono(Configuration(
+  ChronoInstance clone() {
+    return ChronoInstance(Configuration(
       parsers: [...parsers],
       refiners: [...refiners],
     ));
@@ -86,7 +86,7 @@ class Chrono {
 
     List<ParsingResult> results = [];
     for (final parser in parsers) {
-      final parsedResults = Chrono._executeParser(context, parser);
+      final parsedResults = ChronoInstance._executeParser(context, parser);
       results = [...results, ...parsedResults];
     }
 
@@ -139,7 +139,8 @@ class Chrono {
       final parsedIndex = parsedResult.index;
       final parsedText = parsedResult.text;
       context.debug(() {
-        print("${parser.runtimeType} extracted (at index=$parsedIndex) '$parsedText'");
+        print(
+            "${parser.runtimeType} extracted (at index=$parsedIndex) '$parsedText'");
       });
 
       results.add(parsedResult);
