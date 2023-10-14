@@ -1,6 +1,4 @@
-# Chrono for Dart (Flutter)
-
-Port of Chrono (https://github.com/wanasit/chrono) to Dart lang.
+# Chrono - Date parser for Dart (Flutter)
 
 [![pub.dev/packages/chrono_dart](https://img.shields.io/pub/v/chrono_dart.svg "chrono_dart on pub.dev")](https://pub.dev/packages/chrono_dart)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -23,15 +21,18 @@ Simply pass a string to functions chrono.parseDate or chrono.parse.
 ```dart
 import 'package:chrono_dart/chrono_dart.dart' as chrono;
 
-chrono.parseDate('An appointment on Sep 12-13');
-// Fri Sep 12 2014 12:00:00 GMT-0500 (CDT)
+chrono.parseDate('An appointment on Sep 12');
+// Tue Sep 12 2023 12:00:00 GMT-0500 (CDT)
     
-chrono.parse('An appointment on Sep 12-13');
+chrono.parse('An appointment on Sep 12');
 /* [<ParsedResult>{ 
     index: 18,
-    text: 'Sep 12-13',
+    text: 'Sep 12',
+    date() => DateTime('2023-09-12T12:00:00'),
     start: ...
 }] */
 ```
 
+-----------
+Port of Chrono to Dart lang.
 For extended API information see [the original package](https://github.com/wanasit/chrono/).
