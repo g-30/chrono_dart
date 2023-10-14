@@ -3,7 +3,7 @@ import '../../../results.dart' show ParsingComponents;
 import '../../../chrono.dart' show ParsingContext;
 import '../../../types.dart' show RegExpChronoMatch;
 import '../../../common/parsers/AbstractParserWithWordBoundary.dart';
-import '../../../common/casualReferences.dart' as casualReferences;
+import '../../../common/casual_references.dart' as casualReferences;
 
 final _pattern = RegExp(
     r'(?:this)?\s{0,3}(morning|afternoon|evening|night|midnight|midday|noon)(?=\W|$)',

@@ -1,5 +1,5 @@
 import "../../../types.dart" show Component;
-import "../../../common/abstractRefiners.dart" show MergingRefiner;
+import '../../../common/abstract_refiners.dart' show MergingRefiner;
 import "../../../results.dart"
     show ParsingComponents, ParsingResult, ReferenceWithTimezone;
 import "../constants.dart" show parseTimeUnits;

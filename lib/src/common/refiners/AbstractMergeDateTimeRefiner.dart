@@ -1,5 +1,5 @@
 import '../../results.dart' show ParsingResult;
-import '../abstractRefiners.dart' show MergingRefiner;
+import '../abstract_refiners.dart' show MergingRefiner;
 import '../../calculation/mergingCalculation.dart' show mergeDateTimeResult;
 
 abstract class AbstractMergeDateTimeRefiner extends MergingRefiner {

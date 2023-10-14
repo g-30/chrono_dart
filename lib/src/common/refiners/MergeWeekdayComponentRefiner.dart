@@ -1,4 +1,4 @@
-import '../abstractRefiners.dart' show MergingRefiner;
+import '../abstract_refiners.dart' show MergingRefiner;
 import '../../results.dart' show ParsingResult;
 import '../../types.dart' show Component;
 

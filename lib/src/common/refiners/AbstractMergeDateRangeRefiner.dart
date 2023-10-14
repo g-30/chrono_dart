@@ -1,7 +1,7 @@
 import 'dart:math' show min;
 import '../../results.dart' show ParsingResult;
 import '../../types.dart' show Component;
-import '../abstractRefiners.dart' show MergingRefiner;
+import '../abstract_refiners.dart' show MergingRefiner;
 
 abstract class AbstractMergeDateRangeRefiner extends MergingRefiner {
   RegExp patternBetween();

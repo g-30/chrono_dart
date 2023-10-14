@@ -1,4 +1,4 @@
-import '../abstractRefiners.dart' show Filter;
+import '../abstract_refiners.dart' show Filter;
 import '../../results.dart' show ParsingResult;
 import '../../types.dart' show Component;
 

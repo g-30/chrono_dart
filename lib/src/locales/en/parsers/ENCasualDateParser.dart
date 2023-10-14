@@ -3,7 +3,7 @@ import '../../../chrono.dart' show ParsingContext;
 import '../../../types.dart' show RegExpChronoMatch, Component;
 import '../../../common/parsers/AbstractParserWithWordBoundary.dart';
 import '../../../utils/day.dart' show assignSimilarDate;
-import '../../../common/casualReferences.dart' as references;
+import '../../../common/casual_references.dart' as references;
 
 final _pattern = RegExp(
     r'(now|today|tonight|tomorrow|tmr|tmrw|yesterday|last\s*night)(?=\W|$)',
