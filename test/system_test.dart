@@ -221,6 +221,30 @@ test("Test - Add custom parser with tags example", () {
     expect(date, toBeDate(DateTime(2023, 10, 09, 15)));
   });
 
+  test("Test - Tomorrow", () {
+    final chronoInst = Chrono.casual;
+    final res = chronoInst.parse("I'll see you tomorrow at 7pm!", DateTime(2023, 10, 05));
+    final date = res.firstOrNull?.date();
+    expect(date, isNotNull);
+    expect(date, toBeDate(DateTime(2023, 10, 06, 19)));
+  });
+
+  test("Test - Day after tomorrow", () {
+    final chronoInst = Chrono.casual;
+    final res = chronoInst.parse("I'll see you the day after tomorrow at 6pm!", DateTime(2023, 10, 05));
+    final date = res.firstOrNull?.date();
+    expect(date, isNotNull);
+    expect(date, toBeDate(DateTime(2023, 10, 07, 18)));
+  });
+
+  test("Test - yesterday", () {
+    final chronoInst = Chrono.casual;
+    final res = chronoInst.parse("We had a meeting yesterday at 8am!", DateTime(2023, 10, 05));
+    final date = res.firstOrNull?.date();
+    expect(date, isNotNull);
+    expect(date, toBeDate(DateTime(2023, 10, 04, 8)));
+  });
+
   test("Test - Compare with native dart", () {
     final chronoInst = Chrono.instance;
 
