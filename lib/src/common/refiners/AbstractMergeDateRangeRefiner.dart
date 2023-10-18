@@ -39,13 +39,13 @@ abstract class AbstractMergeDateRangeRefiner extends MergingRefiner {
           toMoment.add(7, "days")!.isAfter(fromMoment)) {
         toMoment = toMoment.add(7, "days")!;
         toResult.start.imply(Component.day, toMoment.date());
-        toResult.start.imply(Component.month, toMoment.month() + 1);
+        toResult.start.imply(Component.month, toMoment.month());
         toResult.start.imply(Component.year, toMoment.year());
       } else if (fromResult.start.isOnlyWeekdayComponent() &&
           fromMoment.add(-7, "days")!.isBefore(toMoment)) {
         fromMoment = fromMoment.add(-7, "days")!;
         fromResult.start.imply(Component.day, fromMoment.date());
-        fromResult.start.imply(Component.month, fromMoment.month() + 1);
+        fromResult.start.imply(Component.month, fromMoment.month());
         fromResult.start.imply(Component.year, fromMoment.year());
       } else if (toResult.start.isDateWithUnknownYear() &&
           toMoment.add(1, "years")!.isAfter(fromMoment)) {

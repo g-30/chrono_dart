@@ -258,7 +258,7 @@ class ParsingComponents implements ParsedComponents {
 
       if (fragments["d"] != null) {
         components.assign(Component.day, date.date());
-        components.assign(Component.month, date.month() + 1);
+        components.assign(Component.month, date.month());
         components.assign(Component.year, date.year());
       } else {
         if (fragments["week"] != null) {
@@ -267,10 +267,10 @@ class ParsingComponents implements ParsedComponents {
 
         components.imply(Component.day, date.date());
         if (fragments["month"] != null) {
-          components.assign(Component.month, date.month() + 1);
+          components.assign(Component.month, date.month());
           components.assign(Component.year, date.year());
         } else {
-          components.imply(Component.month, date.month() + 1);
+          components.imply(Component.month, date.month());
           if (fragments["year"] != null) {
             components.assign(Component.year, date.year());
           } else {

@@ -47,7 +47,7 @@ class ENRelativeDateFormatParser extends AbstractParserWithWordBoundaryChecking 
         if (RegExp(r'week', caseSensitive: false).hasMatch(unitWord)) {
             date = date.add(-date.get("d")!, "d")!;
             components.imply(Component.day, date.date());
-            components.imply(Component.month, date.month() + 1);
+            components.imply(Component.month, date.month());
             components.imply(Component.year, date.year());
         }
 
@@ -56,7 +56,7 @@ class ENRelativeDateFormatParser extends AbstractParserWithWordBoundaryChecking 
             date = date.add(-date.date() + 1, "d")!;
             components.imply(Component.day, date.date());
             components.assign(Component.year, date.year());
-            components.assign(Component.month, date.month() + 1);
+            components.assign(Component.month, date.month());
         }
 
         // This year
@@ -65,7 +65,7 @@ class ENRelativeDateFormatParser extends AbstractParserWithWordBoundaryChecking 
             date = date.add(-date.month(), "month")!;
 
             components.imply(Component.day, date.date());
-            components.imply(Component.month, date.month() + 1);
+            components.imply(Component.month, date.month());
             components.assign(Component.year, date.year());
         }
 
