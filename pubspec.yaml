@@ -1,6 +1,6 @@
 name: chrono_dart
 description: A natural language date parser in Dart. Finds date references in user-generated text and returns objects containing DateTime and position in text.
-version: 2.0.0
+version: 2.0.1
 repository: https://github.com/g-30/chrono_dart
 
 environment:
