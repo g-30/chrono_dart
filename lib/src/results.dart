@@ -236,7 +236,7 @@ class ParsingComponents implements ParsedComponents {
     var date = day_js.Day.fromDateTime(reference.instant);
     for (final key in fragments.keys) {
       /// TODO: WARNING: forceful double to int; needs research
-      date = date.add(fragments[key]!.toInt(), key)!;
+      date = date.add(fragments[key]!.toInt(), key) ?? date;
     }
 
     final components = ParsingComponents(reference);
