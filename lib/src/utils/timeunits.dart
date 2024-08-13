@@ -4,12 +4,12 @@ import '../types.dart' show Component;
 typedef TimeUnits = Map<String, num>;
 
 TimeUnits reverseTimeUnits(TimeUnits timeUnits) {
-  final reversed = {};
+  final reversed = <String, num>{};
   for (final key in timeUnits.keys) {
     reversed[key] = -timeUnits[key]!;
   }
 
-  return reversed as TimeUnits;
+  return reversed;
 }
 
 ParsingComponents addImpliedTimeUnits(
