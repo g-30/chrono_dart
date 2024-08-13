@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 –
 
+## [2.0.2] - 2024-08-13
+Null-safety crash fix (incoming PR).
+
+
 ## [2.0.1] - 2023-10-18
 Prevent an additional month from being added in certain cases.
 
